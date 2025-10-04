@@ -4,22 +4,17 @@
 <meta charset="UTF-8">
 <title>Giải phương trình bậc 2</title>
 <style>
-    /* Body & background */
     body { 
-    font-family: Arial, sans-serif; 
-    /* Nền đồng bộ toàn bộ */
-    background-color: #e8f5e9; /* màu giống hệt nửa trên hiện tại */
-    text-align: center; 
-    padding: 40px 20px;
+        font-family: Arial, sans-serif; 
+        background: linear-gradient(135deg, #e8f5e9, #c8e6c9); 
+        text-align:center; 
+        padding:40px 20px;
     }
-
     h1 { 
         color: #1b5e20; 
         margin-bottom: 30px;
         text-shadow: 1px 1px 2px #a5d6a7;
     }
-
-    /* Card chính */
     .card {
         display:inline-block;
         background: #dcedc8;
@@ -29,11 +24,7 @@
         text-align:center;
         transition: transform 0.2s;
     }
-    .card:hover {
-        transform: scale(1.02);
-    }
-
-    /* Input boxes */
+    .card:hover { transform: scale(1.02); }
     .input-box { 
         width:60px; 
         text-align:center; 
@@ -49,8 +40,6 @@
         box-shadow: 0 0 5px #0288d1;
         outline:none;
     }
-
-    /* Buttons */
     .btn { 
         font-size:16px; 
         font-weight:bold; 
@@ -70,8 +59,6 @@
     .btn-reset:hover { background-color: #e53935; }
     .btn-next { background-color: #ff9800; color:white; }
     .btn-next:hover { background-color: #ffa726; }
-
-    /* Equation & result */
     .equation { 
         font-weight:bold; 
         color:#f57f17; 
@@ -86,23 +73,17 @@
         font-size:16px;
         text-shadow: 1px 1px 1px #ddd;
     }
-
-    /* Button group */
     .button-group { 
         display:flex; 
         justify-content:center; 
         gap:20px; 
         margin-top:20px; 
     }
-
-    /* Footer */
     p.copyright {
         color:gray; 
         font-style:italic; 
         margin-top:25px;
     }
-
-    /* Trang trí thêm */
     body::before {
         content:"";
         position:fixed;
@@ -118,17 +99,18 @@
 <h1>Máy giải phương trình bậc 2</h1>
 
 <div class="card">
-    <!-- Input Section -->
     <div id="input-section">
-        <input type="number" id="a" class="input-box" placeholder="a"> x² +
-        <input type="number" id="b" class="input-box" placeholder="b"> x +
-        <input type="number" id="c" class="input-box" placeholder="c"> = 0
+        <input type="text" inputmode="numeric" pattern="-?\d*(\.\d+)?" id="a" class="input-box" placeholder="a"
+               oninput="this.value=this.value.replace(/[^0-9\-\.]/g,'')"> x² +
+        <input type="text" inputmode="numeric" pattern="-?\d*(\.\d+)?" id="b" class="input-box" placeholder="b"
+               oninput="this.value=this.value.replace(/[^0-9\-\.]/g,'')"> x +
+        <input type="text" inputmode="numeric" pattern="-?\d*(\.\d+)?" id="c" class="input-box" placeholder="c"
+               oninput="this.value=this.value.replace(/[^0-9\-\.]/g,'')"> = 0
         <div class="button-group">
             <button class="btn btn-ok" onclick="showEquation()">OK</button>
         </div>
     </div>
 
-    <!-- Equation Section -->
     <div id="equation-section" style="display:none;">
         <div class="equation" id="equation"></div>
         <div class="button-group">
@@ -137,7 +119,6 @@
         </div>
     </div>
 
-    <!-- Result Section -->
     <div id="result-section" style="display:none;">
         <div id="result"></div>
         <div class="button-group">
@@ -166,19 +147,15 @@ function showEquation(){
 }
 
 function solveEquation(){
-    const aVal = document.getElementById('a').value;
-    const bVal = document.getElementById('b').value;
-    const cVal = document.getElementById('c').value;
+    const a = parseFloat(document.getElementById('a').value);
+    const b = parseFloat(document.getElementById('b').value);
+    const c = parseFloat(document.getElementById('c').value);
+    let res = [];
 
-    if(aVal === "" || bVal === "" || cVal === ""){
-        alert("Vui lòng nhập đầy đủ các hệ số a, b, c!");
+    if(isNaN(a) || isNaN(b) || isNaN(c)){
+        alert("Hãy nhập giá trị hợp lệ!");
         return;
     }
-
-    const a = parseFloat(aVal);
-    const b = parseFloat(bVal);
-    const c = parseFloat(cVal);
-    let res = [];
 
     if(a === 0){
         if(b === 0){
