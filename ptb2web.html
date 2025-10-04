@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Giải phương trình bậc 2</title>
+<style>
+    /* Body & background */
+    body { 
+    font-family: Arial, sans-serif; 
+    /* Nền đồng bộ toàn bộ */
+    background-color: #e8f5e9; /* màu giống hệt nửa trên hiện tại */
+    text-align: center; 
+    padding: 40px 20px;
+    }
+
+    h1 { 
+        color: #1b5e20; 
+        margin-bottom: 30px;
+        text-shadow: 1px 1px 2px #a5d6a7;
+    }
+
+    /* Card chính */
+    .card {
+        display:inline-block;
+        background: #dcedc8;
+        padding: 30px 40px;
+        border-radius: 15px;
+        box-shadow: 4px 4px 20px rgba(0,0,0,0.2);
+        text-align:center;
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: scale(1.02);
+    }
+
+    /* Input boxes */
+    .input-box { 
+        width:60px; 
+        text-align:center; 
+        font-size:16px; 
+        margin:0 4px;
+        padding:4px;
+        border-radius:5px;
+        border:1px solid #999;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-box:focus {
+        border-color:#0288d1;
+        box-shadow: 0 0 5px #0288d1;
+        outline:none;
+    }
+
+    /* Buttons */
+    .btn { 
+        font-size:16px; 
+        font-weight:bold; 
+        padding:10px 18px; 
+        border:none; 
+        cursor:pointer; 
+        border-radius:5px;
+        min-width:100px;
+        transition: background 0.2s, transform 0.1s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-ok { background-color: #0288d1; color:white; }
+    .btn-ok:hover { background-color: #03a9f4; }
+    .btn-solve { background-color: #2e7d32; color:white; }
+    .btn-solve:hover { background-color: #43a047; }
+    .btn-reset { background-color: #c62828; color:white; }
+    .btn-reset:hover { background-color: #e53935; }
+    .btn-next { background-color: #ff9800; color:white; }
+    .btn-next:hover { background-color: #ffa726; }
+
+    /* Equation & result */
+    .equation { 
+        font-weight:bold; 
+        color:#f57f17; 
+        margin:15px 0;
+        font-size:18px;
+        text-shadow:1px 1px 2px #fff;
+    }
+    .result { 
+        font-weight:bold; 
+        color:#6a1b9a; 
+        margin:8px 0;
+        font-size:16px;
+        text-shadow: 1px 1px 1px #ddd;
+    }
+
+    /* Button group */
+    .button-group { 
+        display:flex; 
+        justify-content:center; 
+        gap:20px; 
+        margin-top:20px; 
+    }
+
+    /* Footer */
+    p.copyright {
+        color:gray; 
+        font-style:italic; 
+        margin-top:25px;
+    }
+
+    /* Trang trí thêm */
+    body::before {
+        content:"";
+        position:fixed;
+        top:0; left:0; right:0; bottom:0;
+        background-image: radial-gradient(rgba(255,255,255,0.2) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index:-1;
+    }
+</style>
+</head>
+<body>
+
+<h1>Máy giải phương trình bậc 2</h1>
+
+<div class="card">
+    <!-- Input Section -->
+    <div id="input-section">
+        <input type="number" id="a" class="input-box" placeholder="a"> x² +
+        <input type="number" id="b" class="input-box" placeholder="b"> x +
+        <input type="number" id="c" class="input-box" placeholder="c"> = 0
+        <div class="button-group">
+            <button class="btn btn-ok" onclick="showEquation()">OK</button>
+        </div>
+    </div>
+
+    <!-- Equation Section -->
+    <div id="equation-section" style="display:none;">
+        <div class="equation" id="equation"></div>
+        <div class="button-group">
+            <button class="btn btn-solve" onclick="solveEquation()">Giải</button>
+            <button class="btn btn-reset" onclick="resetAll()">Nhập lại</button>
+        </div>
+    </div>
+
+    <!-- Result Section -->
+    <div id="result-section" style="display:none;">
+        <div id="result"></div>
+        <div class="button-group">
+            <button class="btn btn-next" onclick="nextStep()">Tiếp theo</button>
+        </div>
+    </div>
+</div>
+
+<p class="copyright">© Made By MinhTuyen</p>
+
+<script>
+function showEquation(){
+    const aVal = document.getElementById('a').value;
+    const bVal = document.getElementById('b').value;
+    const cVal = document.getElementById('c').value;
+
+    if(aVal === "" || bVal === "" || cVal === ""){
+        alert("Vui lòng nhập đầy đủ các hệ số a, b, c!");
+        return;
+    }
+
+    document.getElementById('equation').innerText = `${aVal}x² + ${bVal}x + ${cVal} = 0`;
+    document.getElementById('input-section').style.display = 'none';
+    document.getElementById('equation-section').style.display = 'block';
+    document.getElementById('result-section').style.display = 'none';
+}
+
+function solveEquation(){
+    const aVal = document.getElementById('a').value;
+    const bVal = document.getElementById('b').value;
+    const cVal = document.getElementById('c').value;
+
+    if(aVal === "" || bVal === "" || cVal === ""){
+        alert("Vui lòng nhập đầy đủ các hệ số a, b, c!");
+        return;
+    }
+
+    const a = parseFloat(aVal);
+    const b = parseFloat(bVal);
+    const c = parseFloat(cVal);
+    let res = [];
+
+    if(a === 0){
+        if(b === 0){
+            if(c === 0) res.push("Phương trình vô số nghiệm");
+            else res.push("Phương trình vô nghiệm");
+        } else {
+            let x = -c/b;
+            res.push(`x = ${x.toFixed(2)}`);
+        }
+    } else {
+        let delta = b*b - 4*a*c;
+        if(delta < 0){
+            res.push("Phương trình vô nghiệm");
+        } else if(delta === 0){
+            let x = -b/(2*a);
+            res.push(`x = ${x.toFixed(2)}`);
+        } else {
+            let x1 = (-b + Math.sqrt(delta))/(2*a);
+            let x2 = (-b - Math.sqrt(delta))/(2*a);
+            res.push(`x₁ = ${x1.toFixed(2)}`);
+            res.push(`x₂ = ${x2.toFixed(2)}`);
+        }
+    }
+
+    let resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = '';
+    res.forEach(r => {
+        let p = document.createElement('div');
+        p.className = 'result';
+        p.innerText = r;
+        resultDiv.appendChild(p);
+    });
+
+    document.getElementById('equation-section').style.display = 'none';
+    document.getElementById('result-section').style.display = 'block';
+}
+
+function resetAll(){
+    document.getElementById('a').value = "";
+    document.getElementById('b').value = "";
+    document.getElementById('c').value = "";
+    document.getElementById('input-section').style.display = 'block';
+    document.getElementById('equation-section').style.display = 'none';
+    document.getElementById('result-section').style.display = 'none';
+}
+
+function nextStep(){
+    resetAll();
+}
+</script>
+
+</body>
+</html>
